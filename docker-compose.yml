@@ -24,7 +24,20 @@ services:
       curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2\"}';
       echo 'Model llama3.2 pulled successfully!';
       "
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open_webui
+    restart: always
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open_webui_data:/app/backend/data
+    depends_on:
+      - ollama
 
 volumes:
+  open_webui_data:
   ollama_data:
     name: ollama_data
