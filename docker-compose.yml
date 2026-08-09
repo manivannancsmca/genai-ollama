@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  # Helper service to pull llama3.2 automatically on startup
+  ollama-model-puller:
+    image: curlimages/curl:latest
+    container_name: ollama_model_puller
+    depends_on:
+      - ollama
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Waiting for Ollama to start...';
+      until curl -s http://ollama:11434/api/tags > /dev/null; do sleep 3; done;
+      echo 'Ollama is ready. Pulling llama3.2...';
+      curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"llama3.2\"}';
+      echo 'Model llama3.2 pulled successfully!';
+      "
+
+volumes:
+  ollama_data:
+    name: ollama_data
