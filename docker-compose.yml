@@ -29,9 +29,12 @@ services:
     container_name: open_webui
     restart: always
     ports:
-      - "3000:8080"
+      - "8081:8080"  # <--- Change host port from 3000 to 8081
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=my-secret-key-123
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - open_webui_data:/app/backend/data
     depends_on:
