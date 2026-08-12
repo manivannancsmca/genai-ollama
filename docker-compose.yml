@@ -44,3 +44,4 @@ volumes:
   open_webui_data:
   ollama_data:
     name: ollama_data
+    
