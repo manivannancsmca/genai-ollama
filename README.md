@@ -1,3 +1,4 @@
+
 # Spring Boot + Ollama REST API
 
 This guide explains how to start Ollama, run the Spring Boot application, and test the available REST APIs.
